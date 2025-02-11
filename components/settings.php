@@ -63,7 +63,6 @@ function shift8_store_hours_updater_activate()
 {
     // Register the custom post type on activation (in case it's not already registered).
     shift8_business_post_type();
-    //flush_rewrite_rules();
 
     // Schedule the event if not already scheduled
     if (!wp_next_scheduled('shift8_store_hours_updater_cron_hook')) {
@@ -75,7 +74,6 @@ function shift8_store_hours_updater_deactivate()
 {
     // Clear scheduled events
     wp_clear_scheduled_hook('shift8_store_hours_updater_cron_hook');
-    //flush_rewrite_rules();
 }
 
 /**
