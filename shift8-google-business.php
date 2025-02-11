@@ -13,7 +13,6 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-//require_once(plugin_dir_path(__FILE__).'shift8-jenkins-rules.php' );
 require_once(plugin_dir_path(__FILE__).'components/enqueuing.php' );
 require_once(plugin_dir_path(__FILE__).'components/settings.php' );
 require_once(plugin_dir_path(__FILE__).'components/functions.php' );
@@ -58,7 +57,7 @@ function shift8_business_create_menu() {
 }
 
 // Register admin settings
-function register_shift8_jenkins_settings() {
+function register_shift8_business_settings() {
     // Register settings
     register_setting('shift8_google_business_group', 'shift8_google_api_key', array(
         'type' => 'string',
@@ -146,6 +145,10 @@ function shift8_business_settings_callback()
             <input type="hidden" name="shift8_business_settings_submitted" value="1" />
             <?php submit_button(__('Save Settings', 'shift8')); ?>
         </form>
+        <h2><?php _e('Test API Key', 'shift8'); ?></h2>
+        <p><?php _e('Click the button below to test your Google API key with the first Place ID in your list.', 'shift8'); ?></p>
+        <button id="shift8_business_test_api" class="button button-primary"><?php _e('Test API', 'shift8'); ?></button>
+        <div id="shift8_api_test_result" style="margin-top: 10px; padding: 10px; background: #f9f9f9; border: 1px solid #ddd; display: none;"></div>
     </div>
     <?php
 }

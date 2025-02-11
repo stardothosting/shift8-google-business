@@ -56,31 +56,31 @@ function shift8_business_post_type()
 /**
  * Register activation/deactivation hooks to set up cron.
  */
-register_activation_hook(__FILE__, 'shift8_store_hours_updater_activate');
-register_deactivation_hook(__FILE__, 'shift8_store_hours_updater_deactivate');
+register_activation_hook(__FILE__, 'shift8_business_updater_activate');
+register_deactivation_hook(__FILE__, 'shift8_business_updater_deactivate');
 
-function shift8_store_hours_updater_activate()
+function shift8_business_updater_activate()
 {
     // Register the custom post type on activation (in case it's not already registered).
     shift8_business_post_type();
 
     // Schedule the event if not already scheduled
-    if (!wp_next_scheduled('shift8_store_hours_updater_cron_hook')) {
-        wp_schedule_event(time(), 'once_per_day', 'shift8_store_hours_updater_cron_hook');
+    if (!wp_next_scheduled('shift8_business_updater_cron_hook')) {
+        wp_schedule_event(time(), 'once_per_day', 'shift8_business_updater_cron_hook');
     }
 }
 
-function shift8_store_hours_updater_deactivate()
+function shift8_business_updater_deactivate()
 {
     // Clear scheduled events
-    wp_clear_scheduled_hook('shift8_store_hours_updater_cron_hook');
+    wp_clear_scheduled_hook('shift8_business_updater_cron_hook');
 }
 
 /**
  * Add a custom cron schedule and hook our function into it.
  */
-add_filter('cron_schedules', 'shift8_store_hours_updater_cron_schedule');
-function shift8_store_hours_updater_cron_schedule($schedules)
+add_filter('cron_schedules', 'shift8_business_updater_cron_schedule');
+function shift8_business_updater_cron_schedule($schedules)
 {
     if (!isset($schedules['once_per_day'])) {
         $schedules['once_per_day'] = array(
@@ -91,4 +91,4 @@ function shift8_store_hours_updater_cron_schedule($schedules)
     return $schedules;
 }
 
-add_action('shift8_store_hours_updater_cron_hook', 'shift8_store_hours_updater_update_store_hours');
+add_action('shift8_business_updater_cron_hook', 'shift8_business_update');
