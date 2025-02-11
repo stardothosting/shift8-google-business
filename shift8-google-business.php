@@ -45,19 +45,57 @@ function shift8_business_create_menu() {
         if ( empty ( $GLOBALS['admin_page_hooks']['shift8-settings'] ) ) {
                 add_menu_page('Shift8 Settings', 'Shift8', 'administrator', 'shift8-settings', 'shift8_main_page' , 'dashicons-shift8' );
         }
-        add_submenu_page('shift8-settings', 'Google Business Settings', 'Google Business Settings', 'manage_options', __FILE__.'/custom', 'shift8_business_settings_page');
+        add_submenu_page(
+            'shift8-settings', // Parent menu
+            __('Shift8 Google Business Settings', 'shift8'),
+            __('Google Business', 'shift8'),
+            'manage_options',
+            'shift8_google_business_settings',
+            'shift8_business_settings_callback'
+        );
         //call register settings function
-        add_action('admin_menu', 'shift8_business_settings_page');
+        add_action('admin_menu', 'register_shift8_business_settings');
 }
 
-function shift8_business_settings_page()
-{
-    add_options_page(
-        __('Shift8 Google Business Settings', 'shift8'),
-        __('Shift8 Business', 'shift8'),
-        'manage_options',
-        'shift8_business_settings',
-        'shift8_business_settings_callback'
+// Register admin settings
+function register_shift8_jenkins_settings() {
+    // Register settings
+    register_setting('shift8_google_business_group', 'shift8_google_api_key', array(
+        'type' => 'string',
+        'sanitize_callback' => 'sanitize_text_field',
+        'default' => ''
+    ));
+    
+    register_setting('shift8_google_business_group', 'shift8_google_place_ids', array(
+        'type' => 'string',
+        'sanitize_callback' => 'sanitize_textarea_field',
+        'default' => ''
+    ));
+
+    // Add Section
+    add_settings_section(
+        'shift8_google_business_main',
+        __('Google Business Settings', 'shift8'),
+        'shift8_google_business_section_callback',
+        'shift8_google_business_settings'
+    );
+
+    // API Key Field
+    add_settings_field(
+        'shift8_google_api_key',
+        __('Google API Key', 'shift8'),
+        'shift8_google_api_key_callback',
+        'shift8_google_business_settings',
+        'shift8_google_business_main'
+    );
+
+    // Place IDs Field
+    add_settings_field(
+        'shift8_google_place_ids',
+        __('Google Places IDs (one per line)', 'shift8'),
+        'shift8_google_place_ids_callback',
+        'shift8_google_business_settings',
+        'shift8_google_business_main'
     );
 }
 
