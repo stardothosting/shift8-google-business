@@ -1,8 +1,8 @@
 <?php
 /**
- * Plugin Name: Shift8 Google Business
+ * Plugin Name: Shift8 for Google Business
  * Description: Automatically sync and update your store hours and data daily from Google Maps to keep customers informed in real time. Now stores data in a custom post type and uses a settings page for configuration.
- * Version: 2.0.1
+ * Version: 2.0.5
  * Author: Shift8 Web 
  * Author URI: https://www.shift8web.ca
  * License: GPLv3
@@ -18,7 +18,7 @@ require_once(plugin_dir_path(__FILE__).'components/settings.php' );
 require_once(plugin_dir_path(__FILE__).'components/functions.php' );
 
 
-// Admin welcome page
+// This function is shared across multiple Shift8 plugins to provide a common settings area.
 if (!function_exists('shift8_main_page')) {
     function shift8_main_page() {
     ?>
@@ -46,18 +46,18 @@ function shift8_business_create_menu() {
         }
         add_submenu_page(
             'shift8-settings', // Parent menu
-            __('Shift8 Google Business Settings', 'shift8'),
-            __('Google Business', 'shift8'),
+            esc_html__('Shift8 for Google Business Settings', 'shift8-google-business'),
+            esc_html__('Google Business', 'shift8-google-business'),
             'manage_options',
             'shift8_google_business_settings',
             'shift8_business_settings_callback'
         );
         //call register settings function
-        add_action('admin_menu', 'register_shift8_business_settings');
+        add_action('admin_menu', 'shift8_google_business_register_settings');
 }
 
 // Register admin settings
-function register_shift8_business_settings() {
+function shift8_google_business_register_settings() {
     // Register settings
     register_setting('shift8_google_business_group', 'shift8_google_api_key', array(
         'type' => 'string',
@@ -74,7 +74,7 @@ function register_shift8_business_settings() {
     // Add Section
     add_settings_section(
         'shift8_google_business_main',
-        __('Google Business Settings', 'shift8'),
+        esc_html__('Google Business Settings', 'shift8-google-business'),
         'shift8_google_business_section_callback',
         'shift8_google_business_settings'
     );
@@ -82,7 +82,7 @@ function register_shift8_business_settings() {
     // API Key Field
     add_settings_field(
         'shift8_google_api_key',
-        __('Google API Key', 'shift8'),
+        esc_html__('Google API Key', 'shift8-google-business'),
         'shift8_google_api_key_callback',
         'shift8_google_business_settings',
         'shift8_google_business_main'
@@ -91,7 +91,7 @@ function register_shift8_business_settings() {
     // Place IDs Field
     add_settings_field(
         'shift8_google_place_ids',
-        __('Google Places IDs (one per line)', 'shift8'),
+        esc_html__('Google Places IDs (one per line)', 'shift8-google-business'),
         'shift8_google_place_ids_callback',
         'shift8_google_business_settings',
         'shift8_google_business_main'
@@ -106,13 +106,14 @@ function shift8_business_settings_callback()
 
     // Save the settings if the form is submitted
     if (isset($_POST['shift8_business_settings_submitted']) && check_admin_referer('shift8_business_settings_form')) {
+        $submitted = sanitize_text_field($_POST['shift8_business_settings_submitted']);
         $api_key  = sanitize_text_field($_POST['shift8_google_api_key']);
         $place_ids = sanitize_textarea_field($_POST['shift8_google_place_ids']);
 
         update_option('shift8_google_api_key', $api_key);
         update_option('shift8_google_place_ids', $place_ids);
 
-        echo '<div class="updated"><p>' . __('Settings saved.', 'shift8') . '</p></div>';
+        echo '<div class="updated"><p>' . esc_html__('Settings saved.', 'shift8-google-business') . '</p></div>';
     }
 
     $stored_api_key  = get_option('shift8_google_api_key', '');
@@ -120,13 +121,13 @@ function shift8_business_settings_callback()
 
     ?>
     <div class="wrap">
-        <h1><?php _e('Shift8 Google Business Settings', 'shift8'); ?></h1>
+        <h1><?php esc_html_e('Shift8 for Google Business Settings', 'shift8-google-business'); ?></h1>
         <form method="post">
             <?php wp_nonce_field('shift8_business_settings_form'); ?>
             <table class="form-table">
                 <tr valign="top">
                     <th scope="row">
-                        <label for="shift8_google_api_key"><?php _e('Google API Key', 'shift8'); ?></label>
+                        <label for="shift8_google_api_key"><?php esc_html_e('Google API Key', 'shift8-google-business'); ?></label>
                     </th>
                     <td>
                         <input type="text" id="shift8_google_api_key" name="shift8_google_api_key" value="<?php echo esc_attr($stored_api_key); ?>" size="50" />
@@ -134,20 +135,20 @@ function shift8_business_settings_callback()
                 </tr>
                 <tr valign="top">
                     <th scope="row">
-                        <label for="shift8_google_place_ids"><?php _e('Google Places IDs (one per line)', 'shift8'); ?></label>
+                        <label for="shift8_google_place_ids"><?php esc_html_e('Google Places IDs (one per line)', 'shift8-google-business'); ?></label>
                     </th>
                     <td>
                         <textarea id="shift8_google_place_ids" name="shift8_google_place_ids" rows="5" cols="50"><?php echo esc_textarea($stored_place_ids); ?></textarea>
-                        <p class="description"><?php _e('Enter multiple Place IDs, each on a new line.', 'shift8'); ?></p>
+                        <p class="description"><?php esc_html_e('Enter multiple Place IDs, each on a new line.', 'shift8-google-business'); ?></p>
                     </td>
                 </tr>
             </table>
             <input type="hidden" name="shift8_business_settings_submitted" value="1" />
-            <?php submit_button(__('Save Settings', 'shift8')); ?>
+            <?php submit_button(esc_html__('Save Settings', 'shift8-google-business')); ?>
         </form>
-        <h2><?php _e('Test API Key', 'shift8'); ?></h2>
-        <p><?php _e('Click the button below to test your Google API key with the first Place ID in your list.', 'shift8'); ?></p>
-        <button id="shift8_business_test_api" class="button button-primary"><?php _e('Test API', 'shift8'); ?></button>
+        <h2><?php esc_html_e('Test API Key', 'shift8-google-business'); ?></h2>
+        <p><?php esc_html_e('Click the button below to test your Google API key with the first Place ID in your list.', 'shift8-google-business'); ?></p>
+        <button id="shift8_business_test_api" class="button button-primary"><?php esc_html_e('Test API', 'shift8-google-business'); ?></button>
         <div id="shift8_api_test_result" style="margin-top: 10px; padding: 10px; background: #f9f9f9; border: 1px solid #ddd; display: none;"></div>
     </div>
     <?php

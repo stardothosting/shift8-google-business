@@ -1,6 +1,6 @@
 <?php
 /**
- * Shift8 Google Business Settings
+ * Shift8 for Google Business Settings
  *
  * Declaration of plugin settings used throughout
  *
@@ -18,20 +18,20 @@ add_action('init', 'shift8_business_post_type');
 function shift8_business_post_type()
 {
     $labels = array(
-        'name'               => __('Business Profiles', 'shift8'),
-        'singular_name'      => __('Business Profile', 'shift8'),
-        'menu_name'          => __('Business Profiles', 'shift8'),
-        'name_admin_bar'     => __('Business Profile', 'shift8'),
-        'add_new'            => __('Add New', 'shift8'),
-        'add_new_item'       => __('Add New Business Profile', 'shift8'),
-        'new_item'           => __('New Business Profile', 'shift8'),
-        'edit_item'          => __('Edit Business Profile', 'shift8'),
-        'view_item'          => __('View Business Profile', 'shift8'),
-        'all_items'          => __('All Business Profiles', 'shift8'),
-        'search_items'       => __('Search Business Profiles', 'shift8'),
-        'parent_item_colon'  => __('Parent Business Profiles:', 'shift8'),
-        'not_found'          => __('No Business Profiles found.', 'shift8'),
-        'not_found_in_trash' => __('No Business Profiles found in Trash.', 'shift8')
+        'name'               => esc_html__('Business Profiles', 'shift8-google-business'),
+        'singular_name'      => esc_html__('Business Profile', 'shift8-google-business'),
+        'menu_name'          => esc_html__('Business Profiles', 'shift8-google-business'),
+        'name_admin_bar'     => esc_html__('Business Profile', 'shift8-google-business'),
+        'add_new'            => esc_html__('Add New', 'shift8-google-business'),
+        'add_new_item'       => esc_html__('Add New Business Profile', 'shift8-google-business'),
+        'new_item'           => esc_html__('New Business Profile', 'shift8-google-business'),
+        'edit_item'          => esc_html__('Edit Business Profile', 'shift8-google-business'),
+        'view_item'          => esc_html__('View Business Profile', 'shift8-google-business'),
+        'all_items'          => esc_html__('All Business Profiles', 'shift8-google-business'),
+        'search_items'       => esc_html__('Search Business Profiles', 'shift8-google-business'),
+        'parent_item_colon'  => esc_html__('Parent Business Profiles:', 'shift8-google-business'),
+        'not_found'          => esc_html__('No Business Profiles found.', 'shift8-google-business'),
+        'not_found_in_trash' => esc_html__('No Business Profiles found in Trash.', 'shift8-google-business')
     );
 
     $args = array(
@@ -85,7 +85,7 @@ function shift8_business_updater_cron_schedule($schedules)
     if (!isset($schedules['once_per_day'])) {
         $schedules['once_per_day'] = array(
             'interval' => 86400,
-            'display'  => __('Once per Day')
+            'display'  => esc_html__('Once per Day', 'shift8-google-business')
         );
     }
     return $schedules;

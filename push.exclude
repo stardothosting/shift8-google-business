@@ -1,0 +1,9 @@
+.DS_Store
+.git
+.gitignore
+assets
+LICENSE
+README.md
+push.exclude
+push.sh
+svn

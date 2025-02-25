@@ -1,6 +1,6 @@
 <?php
 /**
- * Shift8 Google Business Main Functions
+ * Shift8 for Google Business Main Functions
  *
  * Collection of functions used throughout the operation of the plugin
  *
@@ -88,33 +88,36 @@ function shift8_business_update()
 function shift8_make_google_api_request($url)
 {
     for ($i = 0; $i < 3; $i++) {
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-        curl_setopt($ch, CURLOPT_FAILONERROR, true); // Fail on HTTP errors
+        $response = wp_remote_get($url, array(
+            'timeout' => 10, // Set timeout to avoid long waits
+            'redirection' => 5, // Allow up to 5 redirects
+            'httpversion' => '1.1',
+            'blocking' => true,
+            'headers' => array(
+                'Accept' => 'application/json'
+            ),
+        ));
 
-        $response = curl_exec($ch);
-        $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-        $curl_error = curl_error($ch);
-
-        if ($http_code !== 200) {
-            error_log("Shift8 API Request Failed - HTTP Code: " . $http_code);
-            error_log("Shift8 API Request cURL Error: " . $curl_error);
-        }
-
-        if ($curl_error) {
-            shift8_log_message('cURL Error: ' . $curl_error);
+        if (is_wp_error($response)) {
+            $error_message = $response->get_error_message();
+            shift8_log_message("Shift8 API Request Failed - Error: " . $error_message);
         } else {
-            curl_close($ch);
-            return json_decode($response, true);
+            $http_code = wp_remote_retrieve_response_code($response);
+            $body = wp_remote_retrieve_body($response);
+
+            if ($http_code !== 200) {
+                shift8_log_message("Shift8 API Request Failed - HTTP Code: " . $http_code);
+                shift8_log_message("Shift8 API Response Body: " . $body);
+            } else {
+                return json_decode($body, true);
+            }
         }
 
-        curl_close($ch);
-        sleep(1); // Delay before retry
+        sleep(1); // Delay before retrying
     }
     return null;
 }
+
 
 /**
  * Logging helper.
@@ -138,16 +141,16 @@ add_action('wp_ajax_shift8_business_test_api', 'shift8_business_test_api');
 function shift8_business_test_api()
 {
     error_log("Shift8 Test API: AJAX request received");
-    error_log("Shift8 Test API: REQUEST DATA - " . print_r($_REQUEST, true));
+    error_log("Shift8 Test API: REQUEST DATA - " . print_r(sanitize_text_field(wp_unslash($_REQUEST)), true));
 
     if (!current_user_can('manage_options')) {
         error_log("Shift8 Test API: Unauthorized user.");
-        wp_send_json_error(['message' => __('Unauthorized request.', 'shift8')]);
+        wp_send_json_error(['message' => esc_html__('Unauthorized request.', 'shift8-google-business')]);
     }
 
-    if (!isset($_REQUEST['nonce']) || !wp_verify_nonce($_REQUEST['nonce'], 'shift8_business_test_api')) {
+    if (!isset($_REQUEST['nonce']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_REQUEST['nonce'])), 'shift8_business_test_api')) {
         error_log("Shift8 Test API: Invalid Nonce.");
-        wp_send_json_error(['message' => __('Invalid security nonce.', 'shift8')]);
+        wp_send_json_error(['message' => esc_html__('Invalid security nonce.', 'shift8-google-business')]);
     }
 
     $api_key = get_option('shift8_google_api_key', '');
@@ -155,19 +158,19 @@ function shift8_business_test_api()
 
     if (empty($api_key)) {
         error_log("Shift8 Test API: Google API key missing.");
-        wp_send_json_error(['message' => __('Google API key is missing.', 'shift8')]);
+        wp_send_json_error(['message' => esc_html__('Google API key is missing.', 'shift8-google-business')]);
     }
 
     if (empty($place_ids_raw)) {
         error_log("Shift8 Test API: No Place IDs found.");
-        wp_send_json_error(['message' => __('No Place IDs found.', 'shift8')]);
+        wp_send_json_error(['message' => esc_html__('No Place IDs found.', 'shift8-google-business')]);
     }
 
     $place_ids = array_unique(array_filter(array_map('trim', explode("\n", $place_ids_raw))));
 
     if (empty($place_ids)) {
         error_log("Shift8 Test API: No valid Place IDs.");
-        wp_send_json_error(['message' => __('No valid Place IDs found.', 'shift8')]);
+        wp_send_json_error(['message' => esc_html__('No valid Place IDs found.', 'shift8-google-business')]);
     }
 
     $first_place_id = reset($place_ids);
@@ -179,13 +182,13 @@ function shift8_business_test_api()
 
     if (!$response) {
         error_log("Shift8 Test API: No response from Google API.");
-        wp_send_json_error(['message' => __('Failed to connect to Google API.', 'shift8')]);
+        wp_send_json_error(['message' => esc_html__('Failed to connect to Google API.', 'shift8-google-business')]);
     }
 
     if (!isset($response['status']) || $response['status'] !== 'OK') {
         error_log("Shift8 Test API: Google API error - " . json_encode($response));
         wp_send_json_error([
-            'message' => __('Google API returned an error.', 'shift8'),
+            'message' => esc_html__('Google API returned an error.', 'shift8-google-business'),
             'details' => $response
         ]);
     }
@@ -193,7 +196,7 @@ function shift8_business_test_api()
     error_log("Shift8 Test API: API Success - " . json_encode($response['result']));
 
     wp_send_json_success([
-        'message' => __('API Key is working!', 'shift8'),
+        'message' => esc_html__('API Key is working!', 'shift8-google-business'),
         'data' => json_encode($response['result'], JSON_PRETTY_PRINT),
     ]);
 }

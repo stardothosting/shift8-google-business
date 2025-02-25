@@ -1,14 +1,31 @@
-=== Shift8 Google Business ===
+=== Shift8 for Google Business ===
 * Contributors: shift8  
 * Donate link: https://www.shift8web.ca  
 * Tags: google business, google places, google my business, business hours, wordpress, google maps  
-* Requires at least: 3.0.1  
-* Tested up to: 6.5  
-* Stable tag: 2.0.1  
+* Requires at least: 5.8
+* Tested up to: 6.7
+* Stable tag: 2.0.5
 * License: GPLv3  
 * License URI: http://www.gnu.org/licenses/gpl-3.0.html  
 
-Shift8 Google Business helps you automatically sync your business information and hours from Google My Business (Google Places) directly into your WordPress site. The plugin polls the Google Places API daily via a scheduled cron job, storing the data in a custom post type for easy viewing or display on the front end. Easily manage multiple locations by simply adding Place IDs to the plugin’s settings page.
+Shift8 for Google Business helps you automatically sync your business information and hours from Google My Business (Google Places) directly into your WordPress site. The plugin polls the Google Places API daily via a scheduled cron job, storing the data in a custom post type for easy viewing or display on the front end. Easily manage multiple locations by simply adding Place IDs to the plugin’s settings page. All data is encoded as JSON data in the post content field.
+
+For complete instructions and an in-depth overview of how the plugin works, stay tuned for a detailed article on our [Shift8 blog](https://shift8web.ca).
+
+== External services ==
+
+This plugin connects to the Google Places API to retrieve business details based on Place IDs. This connection is required to display business information within the plugin.
+
+It sends the Google API key and the requested Place ID each time the API is queried. No user-identifiable information is transmitted during this process.
+
+This service is provided by Google:
+- [Google API Terms of Service](https://developers.google.com/maps/terms)
+- [Google Privacy Policy](https://policies.google.com/privacy)
+
+== Other Notes ==
+
+Shared Settings Area:
+This plugin shares a common settings area with other Shift8 plugins. To avoid conflicts, shared functions such as `shift8_main_page` are wrapped with `function_exists` checks.
 
 == Want to see the plugin in action? ==
 
@@ -74,3 +91,19 @@ Currently, the plugin dumps all the fetched Place data into the post content for
 = 2.0.1 =
 * Updated readme and minor code cleanups  
 * Tested for WordPress 6.5 compatibility  
+
+= 2.0.2 =
+* Switched to wp_remote_get
+
+= 2.0.3 = 
+* Trademark name adjustment
+
+= 2.0.4 =
+* Updated requires at to stable major version
+* Updated readme
+* Adjusted internationalization variables
+* Sanitize user input
+
+= 2.0.5 =
+* Escape output adjustments
+* Function name adjustments
