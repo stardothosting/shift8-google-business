@@ -14,6 +14,7 @@ git push origin master
 # rsync to svn
 mkdir ./svn/tags/$2
 rsync -ravzp --exclude-from './push.exclude' ./ ./svn/trunk
+rsync -ravzp --exclude-from './push.exclude' ./ ./svn/tags/$2
 rsync -ravzp ./assets/ ./svn/assets
 cd svn
 svn cp trunk tags/$2
