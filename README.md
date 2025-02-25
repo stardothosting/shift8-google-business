@@ -4,11 +4,11 @@
 * Tags: google business, google places, google my business, business hours, wordpress, google maps  
 * Requires at least: 5.8
 * Tested up to: 6.7  
-* Stable tag: 2.0.5
+* Stable tag: 2.0.6
 * License: GPLv3  
 * License URI: http://www.gnu.org/licenses/gpl-3.0.html  
 
-Shift8 for Google Business helps you automatically sync your business information and hours from Google My Business (Google Places) directly into your WordPress site. The plugin polls the Google Places API daily via a scheduled cron job, storing the data in a custom post type for easy viewing or display on the front end. Easily manage multiple locations by simply adding Place IDs to the plugin’s settings page. All data is encoded as JSON data in the post content field.
+Shift8 for Google Business syncs your business info and hours from Google My Business to WordPress, storing data in a custom post type for easy display.
 
 For complete instructions and an in-depth overview of how the plugin works, stay tuned for a detailed article on our [Shift8 blog](https://shift8web.ca).
 
@@ -107,3 +107,6 @@ Currently, the plugin dumps all the fetched Place data into the post content for
 ### 2.0.5
 * Escape output adjustments
 * Function name adjustments
+
+### 2.0.6
+* Updated readme, push process
