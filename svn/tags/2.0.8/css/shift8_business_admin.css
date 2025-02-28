@@ -1,0 +1,71 @@
+.shift8-google-button {
+    background-color: #f44336; 
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+}
+.shift8-google-button-container {
+	text-align:center;
+	margin:0 auto;
+    width:50%;
+    height:50px;
+    padding:10px;
+}
+.shift8-google-push-button {
+    width:50%;
+    height:50px;
+    float:left;
+}
+.shift8-google-table input {
+    width:100%;
+}
+.shift8-google-activity-log-container h3 {
+    font-size:18px;
+}
+.shift8-google-scrollabletextbox {
+    background-color: #fff;
+    height:200px;
+    width:40%;
+    font-family: Verdana, Tahoma, Arial, Helvetica, sans-serif;
+    font-size: 82%;
+    overflow:scroll;
+}
+.shift8-google-scrollabletextbox li {
+    font-weight:bold;
+}
+
+.shift8-google-box {
+    margin-left:5%;
+    height:50px;
+}
+
+.shift8-google-box select {
+  background: #16a085 !important;
+  color: white;
+  padding: 12px;
+  width: 250px;
+  border: none;
+  font-size: 16px;
+  -webkit-appearance: button;
+  appearance: button;
+  outline: none;
+  border-radius:0;
+  height:47px;
+  line-height:1 !important;
+}
+.shift8-google-box select:hover, .shift8-google-box select:active, .shift8-google-box select:focus, .shift8-google-box select:visited {
+    color: #fff !important;
+}
+
+.shift8-google-box:hover::before {
+  color: rgba(255, 255, 255, 0.6);
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.shift8-google-box select option {
+  padding: 30px;
+}
