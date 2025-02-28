@@ -28,15 +28,5 @@ function shift8_business_admin_scripts($hook) {
         '2.0.2'
     );
 }
+
 add_action('admin_enqueue_scripts', 'shift8_business_admin_scripts');
-
-function shift8_business_load_textdomain() {
-    $locale = determine_locale(); // Dynamically get the current language
-    $mo_file = plugin_dir_path( __FILE__ ) . 'languages/shift8-google-business-' . $locale . '.mo';
-
-    if ( file_exists( $mo_file ) ) {
-        load_textdomain( 'shift8-google-business', $mo_file );
-    }
-}
-add_action( 'plugins_loaded', 'shift8_business_load_textdomain' );
-

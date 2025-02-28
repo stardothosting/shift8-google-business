@@ -2,10 +2,12 @@
 /**
  * Plugin Name: Shift8 for Google Business
  * Description: Automatically sync and update your store hours and data daily from Google Maps to keep customers informed in real time. Now stores data in a custom post type and uses a settings page for configuration.
- * Version: 2.0.8
+ * Version: 2.0.9
  * Author: Shift8 Web 
  * Author URI: https://www.shift8web.ca
  * License: GPLv3
+ * Text Domain: shift8-google-business
+ * Domain Path: /languages
  */
 
 // Exit if accessed directly
