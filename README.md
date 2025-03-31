@@ -3,8 +3,8 @@
 * Donate link: https://www.shift8web.ca  
 * Tags: google business, google places, google my business, business hours, google maps  
 * Requires at least: 5.8
-* Tested up to: 6.7  
-* Stable tag: 2.0.9
+* Tested up to: 6.8
+* Stable tag: 2.0.10
 * License: GPLv3  
 * License URI: http://www.gnu.org/licenses/gpl-3.0.html  
 
@@ -119,3 +119,6 @@ Currently, the plugin dumps all the fetched Place data into the post content for
 
 ### 2.0.9
 * Added en_CA and en_AU translations
+
+### 2.0.10
+* Compatibility update, asset update
