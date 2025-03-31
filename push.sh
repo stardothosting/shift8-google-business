@@ -9,7 +9,7 @@ fi
 # push git first
 git add .
 git commit -m "$1"
-git push origin master
+git push origin main
 
 # rsync to svn
 mkdir ./svn/tags/$2
